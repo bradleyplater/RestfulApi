@@ -9,5 +9,6 @@ namespace RestApi.Data
 	public interface IRestApiRepo
 	{
 		IEnumerable<Command> GetAllCommands();
+		Command GetCommandById(int id);
 	}
 }
