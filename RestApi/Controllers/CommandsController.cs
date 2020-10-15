@@ -14,6 +14,10 @@ namespace RestApi.Controllers
         public ActionResult<IEnumerable<Command>> GetAllCommands()
         {
             var commandItems = _repository.GetAllCommands();
+            if(commandItems is null)
+            {
+                return StatusCode(404, "No items were found);
+            }
             return Ok(commandItems);
         }
 
