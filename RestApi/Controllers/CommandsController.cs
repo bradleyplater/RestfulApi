@@ -16,7 +16,7 @@ namespace RestApi.Controllers
             var commandItems = _repository.GetAllCommands();
             if(commandItems is null)
             {
-                return StatusCode(404, "No items were found);
+                return StatusCode(404, "No items were found");
             }
             return Ok(commandItems);
         }
