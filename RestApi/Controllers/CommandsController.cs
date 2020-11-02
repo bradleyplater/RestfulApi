@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using RestApi.Data;
+using RestApi.Dtos;
 using RestApi.Model;
 using System.Collections.Generic;
 
@@ -10,24 +12,30 @@ namespace RestApi.Controllers
     public class CommandsController : ControllerBase
     {
         private readonly IRestApiRepo _repository;
-        public CommandsController(IRestApiRepo repository)
+        private readonly IMapper _mapper;
+
+        public CommandsController(IRestApiRepo repository, IMapper mapper)
         {
-            _repository = repository;      
+            _repository = repository;
+            _mapper = mapper;
         }
 
-        //private readonly MockRestApiRepo _repository = new MockRestApiRepo();
         [HttpGet]
-        public ActionResult<IEnumerable<Command>> GetAllCommands()
+        public ActionResult<IEnumerable<CommandReadDto>> GetAllCommands()
         {
             var commandItems = _repository.GetAllCommands();
-            return Ok(commandItems);
+            return Ok(_mapper.Map<IEnumerable<CommandReadDto>>(commandItems));
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Command> GetCommandById(int id )
+        public ActionResult<CommandReadDto> GetCommandById(int id )
         {
             var commandItem = _repository.GetCommandById(id);
-            return Ok(commandItem);
+            if(commandItem != null)
+            {
+                return Ok(_mapper.Map<CommandReadDto>(commandItem));
+            }
+            return NotFound();
         }
     }
 }
